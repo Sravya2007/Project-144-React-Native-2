@@ -22,7 +22,7 @@ export default class ViewArticle extends Component {
     }
 
     like = () => {
-        const url = " http://e3f2d74718ca.ngrok.io/liked-article?id=" + this.state.id
+        const url = " http://d82d1934d098.ngrok.io/liked-article?id=" + this.state.id
         axios
         .post(url)
         .then(response => {
@@ -34,7 +34,7 @@ export default class ViewArticle extends Component {
     }
 
     dislike = () => {
-        const url = " http://e3f2d74718ca.ngrok.io/not-liked-article?id=" + this.state.id
+        const url = " http://d82d1934d098.ngrok.io/not-liked-article?id=" + this.state.id
         axios
         .post(url)
         .then(response => {

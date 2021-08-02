@@ -2,45 +2,38 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, SafeAreaView, ScrollView } from "react-native";
 import { Header, Icon, ListItem } from "react-native-elements";
 import axios from "axios";
-import AnimatedLoader from "react-native-animated-loader";
 import moment from 'moment';
 
-export default class HomeScreen extends Component {
+export default class RecommendedArticles extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            articleDetails: {},
-            visible: true,
+            articleDetails: [],
             isFetching: false
         }
     }
 
     componentDidMount() {
-        this.getArticle()
-        setTimeout(() => {
-            this.setState({
-              visible: !this.state.visible
-            });
-        }, 50000);
+        this.getRecommended()
     }
 
-    getArticle = () => {
-    const url = " http://d82d1934d098.ngrok.io";
-
-    axios
-    .get(url)
-
-    .then(response => {
-        let details = response.data.data;
-        this.setState({
-            articleDetails: details,
-            isFetching: false
-        });
-    })
+    getRecommended = () => {
+        const url = " http://d82d1934d098.ngrok.io/recommended-articles";
+    
+        axios
+        .get(url)
+    
+        .then(response => {
+            let details = response.data.data;
+            this.setState({
+                articleDetails: details,
+                isFetching: false
+            })
+        })
     }
 
     onRefresh = () => {
-        this.setState({isFetching: true,},() => {this.getArticle();});
+        this.setState({isFetching: true,},() => {this.getRecommended();});
     }
 
     renderItem = ({item, index}) => (
@@ -67,20 +60,13 @@ export default class HomeScreen extends Component {
     keyExtractor = (item, index) => index.toString();
 
     render() {
-
-        const { articleDetails, visible } = this.state;
+        const { articleDetails } = this.state;
 
         return(
             <View style = {{backgroundColor: '#E7E7E7'}}>
-            <AnimatedLoader
-            visible={visible}
-            overlayColor="rgba(255,255,255,0.75)"
-            source={require("../loader.json")}
-            animationStyle={styles.lottie}
-            speed={1}
-            >
-                <Text>Fetching article metadata...</Text>
-            </AnimatedLoader>
+            <Header
+            centerComponent={{ text: 'Recommended Articles', style: { color: '#fff', fontSize: 20, fontWeight: "bold" } }}
+            backgroundColor = "#485696"/>
             <FlatList
                 keyExtractor = {this.keyExtractor}
                 data = {articleDetails}
@@ -92,10 +78,3 @@ export default class HomeScreen extends Component {
         )
     }
 }
-
-const styles = StyleSheet.create({
-    lottie: {
-      width: 100,
-      height: 100
-    }
-});

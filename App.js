@@ -4,6 +4,9 @@ import ViewArticle from "./screens/ViewArticle";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Icon } from "react-native-elements";
+import { createMaterialTopTabNavigator } from "react-navigation-tabs";
+import PopularArticles from "./screens/PopularArticles";
+import RecommendedArticles from "./screens/RecommendedArticles";
 
 export default function App() {
     return <AppContainer/>;
@@ -27,7 +30,7 @@ const AppStackNavigator = createStackNavigator({
   ViewArticle : {
     screen: ViewArticle,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: () => <Icon name = "arrow-left" color = "#FFF" size = {30} onPress = {() => {navigation.goBack()}} type = "feather" containerStyle = {{margin: 10}} activeOpacity = {0.8} selectionColor = "#EEE"/>,
+      headerLeft: () => <Icon name = "arrow-left" color = "#FFF" size = {30} onPress = {() => {navigation.goBack()}} type = "feather" containerStyle = {{margin: 10}}/>,
       headerTitle: "View Article",
       headerTitleStyle: {
         color: '#FFFF',
@@ -43,4 +46,28 @@ const AppStackNavigator = createStackNavigator({
   initialRouteName: "Home"
 });
 
-const AppContainer = createAppContainer(AppStackNavigator)
+const TopTabNavigator = createMaterialTopTabNavigator({
+	StackNavigator: {
+		screen: AppStackNavigator,
+		navigationOptions: {
+			tabBarLabel: "All Articles"
+		}
+	},
+	RecommendedArticles: {
+		screen: RecommendedArticles,
+		navigationOptions: {
+			tabBarLabel: "Recommended Articles"
+		}
+	},
+	PopularArticles: {
+		screen: PopularArticles,
+		navigationOptions: {
+			tabBarLabel: "Popular Articles"
+		}
+	}
+},
+{
+  initialRouteName: "StackNavigator"
+})
+
+const AppContainer = createAppContainer(TopTabNavigator)
